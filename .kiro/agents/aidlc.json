@@ -12,15 +12,15 @@
   ],
   "allowedTools": [
     "fs_read",
+    "fs_write",
     "thinking",
-    "todo_list"
+    "todo_list",
+    "subagent"
   ],
   "toolsSettings": {
     "execute_bash": {
       "allowedCommands": [
-        "bun \\.kiro/tools/.*",
-        "bun \\${?KIRO_PROJECT_DIR}?/\\.kiro/tools/.*",
-        "date -u .*"
+        ".*"
       ],
       "deniedCommands": [
         "rm -rf /.*",
@@ -29,9 +29,7 @@
     },
     "fs_write": {
       "allowedPaths": [
-        "aidlc/spaces/**",
-        ".kiro/sensors/**",
-        "aidlc/.aidlc-compose-pending"
+        "**"
       ]
     },
     "subagent": {
