@@ -45,6 +45,7 @@
 
 <!-- Technology choices locked for this project. -->
 
+- 인증은 파일럿에서 상태 저장 세션(Spring Security HttpOnly·SameSite 쿠키) 우선, 무상태 JWT는 강제하지 않고 확장 시 재검토. FE/BE 분리 저장소이므로 CORS + credentials(세션 쿠키) 설정 필요. (learned 2026-07-27) <!-- cid:functional-design:c4 -->
 ## Decided
 
 <!-- Decisions made in earlier stages that should not be re-asked. -->
@@ -110,3 +111,5 @@
 <!-- Project-specific corrections from human feedback. -->
 - 증서(수료증·지급 기록증)는 차별화 요소가 아니라 단순한 수료증 이미지 1장 수준의 부가 산출물이다. 별도의 복잡한 발급 시스템 불필요. (corrected 2026-07-22, market-research 게이트 피드백)
 <!-- Format: NEVER/ALWAYS [behavior] (learned [date]) -->
+- Construction 단계에서는 질문을 예외적으로만 생성한다. 상위 스테이지(ideation/inception)에서 결정이 pin되어 genuine gap이 없으면 질문 라운드·질문 파일을 생략하고 산출물 생성으로 진행한다. (learned 2026-07-27) <!-- cid:functional-design:c2 -->
+- 서브에이전트(리뷰어 등)를 디스패치할 때, 산출물·리뷰(## Review 포함)를 반드시 한글로 작성하도록 브리핑에 명시한다. team.md Mandated(모든 산출물 한글) 규칙이 서브에이전트 출력에도 적용됨 — 리뷰어는 기본 영어로 작성하므로 명시 지시 필요. (learned 2026-07-27) <!-- cid:nfr-design:lang-subagent -->

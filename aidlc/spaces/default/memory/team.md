@@ -17,6 +17,7 @@ Bolt 브랜치는 **squash-merge**로 `main`에 머지한다. 각 Bolt는 `main`
 
 Squash는 `main`의 선형 이력을 깔끔하게 유지하며 delivery-planning의 Bolt 시퀀스와 1:1 대응되게 한다. 중간 커밋이 `main`에서 사라지는 트레이드오프가 있지만, 감사 로그가 전체 이벤트 시퀀스를 보존하므로 수용한다.
 
+- §13 학습 포착(learnings) 질문을 제시할 때, 항상 마지막 항목으로 오케스트레이터의 추천 목록(어떤 후보를 유지하고 어떤 것을 생략할지, 근거 포함)을 함께 제시한다. 사용자는 이를 참고해 최종 선택한다. (learned 2026-07-27) <!-- cid:nfr-requirements:user-note-teamrule -->
 ## Walking Skeleton
 
 **LearnKK 파일럿은 walking skeleton을 활성화한다.** Bolt 1은 단독으로 실행되며 게이트된다: 코호트 개설 → 선착순 참여 1명 → 출석 인증 기본 플로우를 관통하는 첫 슬라이스를 배포하고, 사용자는 skeleton의 배포 결과를 검증한 후 나머지 Bolt 실행을 명시적으로 승인한다.

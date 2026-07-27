@@ -11,16 +11,12 @@
     "subagent"
   ],
   "allowedTools": [
-    "fs_read",
-    "fs_write",
-    "thinking",
-    "todo_list",
-    "subagent"
+    "*"
   ],
   "toolsSettings": {
     "execute_bash": {
       "allowedCommands": [
-        ".*"
+        "*"
       ],
       "deniedCommands": [
         "rm -rf /.*",

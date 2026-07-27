@@ -6,7 +6,7 @@
 - **Scope**: enterprise
 - **Start Date**: 2026-07-22T08:45:31Z
 - **State Version**: 7
-- **Active Agent**: aidlc-delivery-agent
+- **Active Agent**: aidlc-architect-agent
 - **Worktree Path**:
 - **Bolt Refs**:
 - **Practices Affirmed Timestamp**: 2026-07-24T14:56:25Z
@@ -25,19 +25,20 @@
 
 ## Execution Plan Summary
 - **Total Stages**: 31
-- **Completed**: 16
-- **In Progress**: delivery-planning
+- **Completed**: 19
+- **In Progress**: nfr-design
 
 ## Runtime State
 - **Revision Count**: 1
 
+- **Skeleton Stance**: on
 ## Phase Progress
 <!-- Status values: Pending, Active, Verified, Skipped -->
 
 - **Initialization**: Verified
 - **Ideation**: Verified
-- **Inception**: Active
-- **Construction**: Pending
+- **Inception**: Verified
+- **Construction**: Active
 - **Operation**: Pending
 
 ## Stage Progress
@@ -65,13 +66,13 @@
 - [x] refined-mockups — EXECUTE
 - [x] application-design — EXECUTE
 - [x] units-generation — EXECUTE
-- [?] delivery-planning — EXECUTE
+- [x] delivery-planning — EXECUTE
 
 ### CONSTRUCTION PHASE
 Per unit: [TBD]
-- [ ] functional-design — EXECUTE
-- [ ] nfr-requirements — EXECUTE
-- [ ] nfr-design — EXECUTE
+- [x] functional-design — EXECUTE
+- [x] nfr-requirements — EXECUTE
+- [-] nfr-design — EXECUTE
 - [ ] infrastructure-design — EXECUTE
 - [ ] code-generation — EXECUTE
 - [ ] build-and-test — EXECUTE
@@ -87,13 +88,13 @@ Per unit: [TBD]
 - [ ] feedback-optimization — EXECUTE
 
 ## Current Status
-- **Lifecycle Phase**: INCEPTION
-- **Current Stage**: delivery-planning
-- **Next Stage**: functional-design
+- **Lifecycle Phase**: CONSTRUCTION
+- **Current Stage**: nfr-design
+- **Next Stage**: infrastructure-design
 - **Status**: Running
-- **Last Updated**: 2026-07-26T13:27:06Z
+- **Last Updated**: 2026-07-27T06:24:31Z
 
 ## Session Resume Point
-- **Last Completed Stage**: units-generation
-- **Next Action**: Execute Delivery Planning
+- **Last Completed Stage**: nfr-requirements
+- **Next Action**: Execute NFR Design
 - **Pending Artifacts**: none
