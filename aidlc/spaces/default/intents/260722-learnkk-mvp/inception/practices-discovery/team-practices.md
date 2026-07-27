@@ -1,9 +1,6 @@
-# Team-Level Rules
+# 팀 실무 관행
 
-> This team's affirmed practices and corrections. Loaded after `org.md` as
-> strict-additive guidance; contradictions with broader policy are rejected.
-> Populated by the practices-discovery affirmation gate. Edit at the gate,
-> not directly.
+> LearnKK 파일럿 팀의 확정된 실무 관행. `org.md` 기본값을 프로젝트 맥락에 맞게 특화함.
 
 ## Way of Working
 
@@ -69,15 +66,3 @@ Squash는 `main`의 선형 이력을 깔끔하게 유지하며 delivery-planning
 - **에러 핸들링:** `@RestControllerAdvice` + 공통 에러 DTO(필드: `code`, `message`, `timestamp`, `path`)로 일관된 에러 응답 제공. 서비스 레이어는 도메인 예외를 던지고, controller advice가 HTTP 상태로 매핑. `Result<T,E>` 커스텀 패턴은 도입하지 않음.
 - **API 문서화:** springdoc-openapi를 사용해 OpenAPI 스펙을 코드에서 자동 생성.
 - **네이밍:** 클래스 `PascalCase`, 메서드/필드 `camelCase`, 패키지 소문자.
-## Forbidden
-
-<!-- Team-specific forbidden patterns -->
-
-## Mandated
-
-<!-- Team-specific mandates -->
-
-- 모든 질문·요약·소통 산출물은 한글로 작성·제시한다. (learned 2026-07-23) <!-- cid:intent-capture:c3 -->
-## Corrections
-
-<!-- Self-learning loop appends here. -->
