@@ -1,5 +1,6 @@
 # AI-DLC per-user cursors and machine-local runtime (per-clone / sensitive)
 # See AGENTS.md § Git Integration.
+.DS_Store
 aidlc/active-space
 aidlc/spaces/*/intents/active-intent
 aidlc/.aidlc-clone-id
