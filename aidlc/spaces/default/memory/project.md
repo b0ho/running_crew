@@ -113,3 +113,6 @@
 <!-- Format: NEVER/ALWAYS [behavior] (learned [date]) -->
 - Construction 단계에서는 질문을 예외적으로만 생성한다. 상위 스테이지(ideation/inception)에서 결정이 pin되어 genuine gap이 없으면 질문 라운드·질문 파일을 생략하고 산출물 생성으로 진행한다. (learned 2026-07-27) <!-- cid:functional-design:c2 -->
 - 서브에이전트(리뷰어 등)를 디스패치할 때, 산출물·리뷰(## Review 포함)를 반드시 한글로 작성하도록 브리핑에 명시한다. team.md Mandated(모든 산출물 한글) 규칙이 서브에이전트 출력에도 적용됨 — 리뷰어는 기본 영어로 작성하므로 명시 지시 필요. (learned 2026-07-27) <!-- cid:nfr-design:lang-subagent -->
+- 유닛 functional-design에서 확립한 크로스유닛 계약(서비스 시그니처)이 중앙 application-design/component-methods.md 레지스트리에 누락될 수 있으므로, nfr-design(및 이후 설계) 리뷰 시 계약 레지스트리와의 정합을 점검하고 누락분을 조율 반영한다. (learned 2026-07-28) <!-- cid:nfr-design:contract-registry-reconciliation -->
+- 파일럿 단일 소유·저동시성 상태 전이는 @Version 낙관적 락 대신 상태 가드 조건 UPDATE(UPDATE ... WHERE id=? AND status=?, 영향 행 0이면 409)를 기본 메커니즘으로 한다. 다중 편집자·고동시성으로 확장 시 @Version 재검토. (learned 2026-07-28) <!-- cid:nfr-design:state-transition-guarded-update -->
+- 인덱스/마이그레이션의 컬럼명이 엔티티 필드명과 일치하는지 설계·리뷰 단계에서 대조한다(예: FinalReport.submittedAt ↔ final_report(submitted_at)). 불일치는 code-generation에서 실패하는 구조적 결함이므로 크로스유닛 리뷰에서 조기 검출한다. (learned 2026-07-28) <!-- cid:infrastructure-design:index-entity-fieldname-consistency -->

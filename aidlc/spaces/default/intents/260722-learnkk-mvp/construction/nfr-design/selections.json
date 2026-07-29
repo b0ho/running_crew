@@ -1,0 +1,21 @@
+{
+  "stage_slug": "nfr-design",
+  "selections": [
+    {
+      "candidate_id": "contract-registry-reconciliation",
+      "type": "learning",
+      "scope": "project",
+      "heading": "Corrections",
+      "text": "유닛 functional-design에서 확립한 크로스유닛 계약(서비스 시그니처)이 중앙 application-design/component-methods.md 레지스트리에 누락될 수 있으므로, nfr-design(및 이후 설계) 리뷰 시 계약 레지스트리와의 정합을 점검하고 누락분을 조율 반영한다.",
+      "source": "orchestrator"
+    },
+    {
+      "candidate_id": "state-transition-guarded-update",
+      "type": "learning",
+      "scope": "project",
+      "heading": "Corrections",
+      "text": "파일럿 단일 소유·저동시성 상태 전이는 @Version 낙관적 락 대신 상태 가드 조건 UPDATE(UPDATE ... WHERE id=? AND status=?, 영향 행 0이면 409)를 기본 메커니즘으로 한다. 다중 편집자·고동시성으로 확장 시 @Version 재검토.",
+      "source": "orchestrator"
+    }
+  ]
+}
