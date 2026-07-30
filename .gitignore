@@ -7,3 +7,19 @@ aidlc/.aidlc-clone-id
 aidlc/.aidlc-sessions/
 aidlc/spaces/*/intents/*/runtime-graph.json
 aidlc/spaces/*/intents/*/.aidlc-*
+# --- LearnKK 애플리케이션 ---
+# 시크릿 (R-U1-26 — 평문/시크릿 커밋 금지)
+.env
+
+# 백엔드 (learnkk-api)
+learnkk-api/.gradle/
+learnkk-api/build/
+learnkk-api/var/uploads/
+
+# 프론트엔드 (learnkk-web)
+learnkk-web/node_modules/
+learnkk-web/dist/
+learnkk-web/coverage/
+
+# 로컬 전용 compose override (DB 포트 노출 등 — 커밋 금지)
+docker-compose.override.yml

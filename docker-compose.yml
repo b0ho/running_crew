@@ -1,0 +1,73 @@
+# LearnKK 로컬 스택 (deployment-architecture.md §1)
+# learnkk-db(내부만) + learnkk-api + learnkk-web, 명명 볼륨 pgdata·uploads
+services:
+  learnkk-db:
+    image: postgres:16-alpine
+    container_name: learnkk-db
+    environment:
+      POSTGRES_DB: ${DB_NAME:-learnkk}
+      POSTGRES_USER: ${DB_USERNAME:-learnkk}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:?DB_PASSWORD 를 설정하세요}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    # db 포트는 호스트에 노출하지 않는다(내부 네트워크만, security-design.md)
+    expose:
+      - '5432'
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U ${DB_USERNAME:-learnkk} -d ${DB_NAME:-learnkk}']
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - learnkk-net
+
+  learnkk-api:
+    build:
+      context: ./learnkk-api
+    container_name: learnkk-api
+    depends_on:
+      learnkk-db:
+        condition: service_healthy
+    environment:
+      DB_URL: jdbc:postgresql://learnkk-db:5432/${DB_NAME:-learnkk}
+      DB_USERNAME: ${DB_USERNAME:-learnkk}
+      DB_PASSWORD: ${DB_PASSWORD:?DB_PASSWORD 를 설정하세요}
+      # R-U1-27 — 관리자 시드(미설정 시 부팅 중단)
+      ADMIN_EMAIL: ${ADMIN_EMAIL:?ADMIN_EMAIL 을 설정하세요}
+      ADMIN_PASSWORD: ${ADMIN_PASSWORD:?ADMIN_PASSWORD 를 설정하세요}
+      BCRYPT_COST: ${BCRYPT_COST:-10}
+      CORS_ALLOWED_ORIGINS: ${CORS_ALLOWED_ORIGINS:-http://localhost:8081}
+      UPLOAD_DIR: /app/var/uploads
+    ports:
+      - '${API_PORT:-8080}:8080'
+    volumes:
+      - uploads:/app/var/uploads
+    healthcheck:
+      test: ['CMD-SHELL', 'wget -qO- http://localhost:8080/actuator/health || exit 1']
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 40s
+    networks:
+      - learnkk-net
+
+  learnkk-web:
+    build:
+      context: ./learnkk-web
+      args:
+        VITE_API_BASE_URL: ''
+    container_name: learnkk-web
+    depends_on:
+      - learnkk-api
+    ports:
+      - '${WEB_PORT:-8081}:80'
+    networks:
+      - learnkk-net
+
+volumes:
+  pgdata:
+  uploads:
+
+networks:
+  learnkk-net:
+    driver: bridge
