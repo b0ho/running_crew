@@ -20,14 +20,20 @@ spring:
       hibernate:
         jdbc:
           time_zone: UTC
+          # performance-design.md §3 — 회차 벌크 생성 시 라운드트립 최소화
+          batch_size: 50
+        order_inserts: true
+        order_updates: true
   flyway:
     enabled: true
     locations: classpath:db/migration
   servlet:
     multipart:
-      # R-U1-23 — 파일당 최대 10MB
+      # R-U1-23 / performance-design.md §2 — 파일당 최대 10MB, multipart 오버헤드 여유 11MB
       max-file-size: 10MB
-      max-request-size: 10MB
+      max-request-size: 11MB
+      # 임계값 초과 시 디스크 임시파일 경유(대용량 힙 사용 억제, 스트리밍 저장)
+      file-size-threshold: 1MB
 
 server:
   servlet:

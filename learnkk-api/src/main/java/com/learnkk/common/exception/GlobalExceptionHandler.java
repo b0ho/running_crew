@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.PessimisticLockingFailureException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
@@ -91,6 +92,78 @@ public class GlobalExceptionHandler {
   public ResponseEntity<ErrorResponse> handleFileConstraint(
       FileConstraintViolationException ex, HttpServletRequest req) {
     return build(HttpStatus.BAD_REQUEST, ErrorCode.FILE_CONSTRAINT_VIOLATION, ex.getMessage(), req);
+  }
+
+  // R-U2-21a — 종료됨 코호트 수정
+  @ExceptionHandler(CohortClosedException.class)
+  public ResponseEntity<ErrorResponse> handleCohortClosed(
+      CohortClosedException ex, HttpServletRequest req) {
+    return build(HttpStatus.CONFLICT, ErrorCode.COHORT_CLOSED, ex.getMessage(), req);
+  }
+
+  // R-U2-21b — 확정 인원 미만 정원 축소
+  @ExceptionHandler(CapacityBelowConfirmedException.class)
+  public ResponseEntity<ErrorResponse> handleCapacityBelowConfirmed(
+      CapacityBelowConfirmedException ex, HttpServletRequest req) {
+    return build(HttpStatus.CONFLICT, ErrorCode.CAPACITY_BELOW_CONFIRMED, ex.getMessage(), req);
+  }
+
+  // R-U2-21c — 인증 회차 절단 축소
+  @ExceptionHandler(SessionVerifiedLockException.class)
+  public ResponseEntity<ErrorResponse> handleSessionVerifiedLock(
+      SessionVerifiedLockException ex, HttpServletRequest req) {
+    return build(HttpStatus.CONFLICT, ErrorCode.SESSION_VERIFIED_LOCK, ex.getMessage(), req);
+  }
+
+  // R-U2-21d — 허용되지 않은 상태 전이(가드 UPDATE 영향 행 0 포함)
+  @ExceptionHandler(InvalidStateTransitionException.class)
+  public ResponseEntity<ErrorResponse> handleInvalidStateTransition(
+      InvalidStateTransitionException ex, HttpServletRequest req) {
+    return build(HttpStatus.CONFLICT, ErrorCode.INVALID_STATE_TRANSITION, ex.getMessage(), req);
+  }
+
+  // R-U3-21a/21b — 이미 신청/동시 이중 제출(UNIQUE 위반은 서비스에서 이 예외로 변환)
+  @ExceptionHandler(AlreadyEnrolledException.class)
+  public ResponseEntity<ErrorResponse> handleAlreadyEnrolled(
+      AlreadyEnrolledException ex, HttpServletRequest req) {
+    return build(HttpStatus.CONFLICT, ErrorCode.ALREADY_ENROLLED, ex.getMessage(), req);
+  }
+
+  // R-U3-21c — 자기 개설 코호트 참여 시도
+  @ExceptionHandler(SelfEnrollmentException.class)
+  public ResponseEntity<ErrorResponse> handleSelfEnrollment(
+      SelfEnrollmentException ex, HttpServletRequest req) {
+    return build(HttpStatus.CONFLICT, ErrorCode.SELF_ENROLLMENT, ex.getMessage(), req);
+  }
+
+  // R-U3-21d — 종료됨 코호트 신규 참여
+  @ExceptionHandler(CohortNotOpenException.class)
+  public ResponseEntity<ErrorResponse> handleCohortNotOpen(
+      CohortNotOpenException ex, HttpServletRequest req) {
+    return build(HttpStatus.CONFLICT, ErrorCode.COHORT_NOT_OPEN, ex.getMessage(), req);
+  }
+
+  // performance-design.md §2 — 참여 신청 락 경합 타임아웃
+  @ExceptionHandler(EnrollmentBusyException.class)
+  public ResponseEntity<ErrorResponse> handleEnrollmentBusy(
+      EnrollmentBusyException ex, HttpServletRequest req) {
+    return build(HttpStatus.CONFLICT, ErrorCode.ENROLLMENT_BUSY, ex.getMessage(), req);
+  }
+
+  // performance-design.md §2 — 비관적 락 획득 실패(락 타임아웃)의 안전망.
+  // 서비스가 EnrollmentBusyException 으로 변환하지 못하고 전파된 경우에도 409 ENROLLMENT_BUSY 로 매핑한다.
+  @ExceptionHandler(PessimisticLockingFailureException.class)
+  public ResponseEntity<ErrorResponse> handlePessimisticLock(
+      PessimisticLockingFailureException ex, HttpServletRequest req) {
+    return build(HttpStatus.CONFLICT, ErrorCode.ENROLLMENT_BUSY, "신청이 몰려 잠시 후 다시 시도해 주세요", req);
+  }
+
+  // R-U5-21d — 데이터 정합 오류(예: 종료 판정 시 전체 회차 수 0). 부분 커밋 없이 안전하게 500.
+  @ExceptionHandler(DataIntegrityException.class)
+  public ResponseEntity<ErrorResponse> handleDataIntegrityDomain(
+      DataIntegrityException ex, HttpServletRequest req) {
+    log.error("데이터 정합 오류", ex);
+    return build(HttpStatus.INTERNAL_SERVER_ERROR, ErrorCode.INTERNAL_ERROR, ex.getMessage(), req);
   }
 
   // R-U1-17i — 그 외 미처리 예외 (내부 상세 비노출)
