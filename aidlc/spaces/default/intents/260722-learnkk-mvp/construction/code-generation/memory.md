@@ -82,3 +82,9 @@
 ## Open questions (U5-completion Bolt)
 
 - 2026-07-30T07:40:00Z — 수료증 폰트 번들 크기(NotoSansKR 전체는 큼) — 파일럿은 필요한 글리프만 담은 서브셋 또는 경량 Hangul 폰트 사용 검토. code-generation에서 실제 폰트 파일 확보/라이선스(OFL) 확인.
+
+## Interpretations (U5 Bolt 재개)
+- 2026-07-30T12:10:00Z — 다른 PC에서 U2·U3·U4 코드 생성 완료 + U5 계획까지 진행 후 `construction/bolts-u2-u5` 브랜치에 커밋(main 미머지). 현 세션은 해당 브랜치로 전환해 재개. U5 code-generation-plan.md는 완성 상태이나 계획승인 `[Answer]` 미기입 → Step 3 Plan Approval 게이트부터 재개.
+
+## Interpretations (U6 Bolt)
+- 2026-07-30T12:40:00Z — U6-admin-metrics(마지막 유닛) 코드 생성 완료. 읽기 전용 리포팅(운영 지표 + 증빙/보고서 이력, 관리자 전용). 신규 테이블 없이 V6 보조 인덱스 2개만 추가. Session 인증상태는 boolean이 아니라 SessionStatus.VERIFIED enum → COUNT 집계. 증빙 다운로드는 U4 기존 엔드포인트 재사용(신규 미생성). 리뷰어 READY. 단위 백엔드10+프론트13 통과, Testcontainers 통합 7건은 Docker 부재로 CI 위임.

@@ -31,6 +31,8 @@
 
 <!-- Project-specific specialisation. -->
 
+- 통합 테스트(Testcontainers)는 Docker 가용 CI에서 실행하며, 로컬 Docker 부재 시 단위 테스트 + 실 compose 스택 라이브 스모크로 동등 검증한다. 통합 테스트 코드는 `@Tag("integration")`으로 분리해 `-PexcludeIntegration`로 로컬 배제 가능하게 한다. (learned 2026-07-30) <!-- cid:code-generation:c1 -->
+
 ## Deployment
 
 <!-- Project-specific specialisation. -->
@@ -41,6 +43,8 @@
 <!-- Project-specific specialisation. -->
 
 - UI는 Tailwind CSS 경량 커스텀 디자인 시스템(기성 UI 라이브러리 미도입), 미니멀·중립 톤 + 강조색 1개로 한다. 코호트 상세에 멤버 탭(간단 목록)을 포함한다. (learned 2026-07-24) <!-- cid:refined-mockups:c1 -->
+- 읽기 전용 리포팅/조회 유닛은 좁은 `Repository<T,ID>` 베이스 상속(쓰기 메서드 미노출) + 서비스 `@Transactional(readOnly=true)`로 무결성을 구조적으로 보장한다. (learned 2026-07-30) <!-- cid:code-generation:c2 -->
+- 서버 생성 산출물(예: 수료증 PNG)을 기존 파일 저장 계약(`FileStorageService.store(MultipartFile)`)으로 저장할 때, 소유 유닛(U1)을 수정하지 않고 인메모리 `MultipartFile` 어댑터로 감싼다. (learned 2026-07-30) <!-- cid:code-generation:c3 -->
 ## Tech Stack
 
 <!-- Technology choices locked for this project. -->

@@ -158,6 +158,14 @@ public class GlobalExceptionHandler {
     return build(HttpStatus.CONFLICT, ErrorCode.ENROLLMENT_BUSY, "신청이 몰려 잠시 후 다시 시도해 주세요", req);
   }
 
+  // R-U5-21d — 데이터 정합 오류(예: 종료 판정 시 전체 회차 수 0). 부분 커밋 없이 안전하게 500.
+  @ExceptionHandler(DataIntegrityException.class)
+  public ResponseEntity<ErrorResponse> handleDataIntegrityDomain(
+      DataIntegrityException ex, HttpServletRequest req) {
+    log.error("데이터 정합 오류", ex);
+    return build(HttpStatus.INTERNAL_SERVER_ERROR, ErrorCode.INTERNAL_ERROR, ex.getMessage(), req);
+  }
+
   // R-U1-17i — 그 외 미처리 예외 (내부 상세 비노출)
   @ExceptionHandler(Exception.class)
   public ResponseEntity<ErrorResponse> handleUnexpected(Exception ex, HttpServletRequest req) {

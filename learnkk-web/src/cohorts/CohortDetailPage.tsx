@@ -4,8 +4,14 @@ import { ApiError } from '../api/ApiClient';
 import { cohortApi } from '../api/cohortApi';
 import type { AnnouncementCreateRequest, CohortDetailDto } from '../api/types';
 import { useAuth } from '../auth/authContext';
+import type { CohortEndSummaryDto } from '../api/types';
 import { AttendancePanel } from '../attendance/AttendancePanel';
 import { Toast, type ToastMessage } from '../common/Toast';
+import { CohortEndSummary } from '../completion/CohortEndSummary';
+import { CompletionResult } from '../completion/CompletionResult';
+import { EndCohortButton } from '../completion/EndCohortButton';
+import { ReportForm } from '../completion/ReportForm';
+import { ReportList } from '../completion/ReportList';
 import { ResponsiveTabBar } from '../shell/ResponsiveTabBar';
 import { AnnouncementForm } from './AnnouncementForm';
 import { AnnouncementList } from './AnnouncementList';
@@ -38,6 +44,8 @@ export function CohortDetailPage() {
   const [submitting, setSubmitting] = useState(false);
   const [starting, setStarting] = useState(false);
   const [toast, setToast] = useState<ToastMessage | null>(null);
+  const [endSummary, setEndSummary] = useState<CohortEndSummaryDto | null>(null);
+  const [reportReloadKey, setReportReloadKey] = useState(0);
 
   const load = useCallback(() => {
     if (!id) return;
@@ -121,7 +129,8 @@ export function CohortDetailPage() {
             <CohortStatusBadge status={detail.status} label={detail.statusLabel} />
           </div>
           <p className="mt-1 text-sm text-gray-600">
-            {detail.startDate} ~ {detail.endDate} · 정원 {detail.capacity}명 · {detail.sessionCount}회차
+            {detail.startDate} ~ {detail.endDate} · 정원 {detail.capacity}명 · {detail.sessionCount}
+            회차
           </p>
           {detail.description && (
             <p className="mt-2 whitespace-pre-wrap text-sm text-gray-700">{detail.description}</p>
@@ -148,6 +157,21 @@ export function CohortDetailPage() {
                   {starting ? '시작 중...' : '코호트 시작'}
                 </button>
               )}
+              {detail.status === 'ONGOING' && (
+                <EndCohortButton
+                  cohortId={detail.id}
+                  onToast={setToast}
+                  onEnded={(summary) => {
+                    setEndSummary(summary);
+                    load();
+                  }}
+                />
+              )}
+            </div>
+          )}
+          {isMentor && endSummary && (
+            <div className="mt-3">
+              <CohortEndSummary summary={endSummary} />
             </div>
           )}
           {error && (
@@ -200,8 +224,14 @@ export function CohortDetailPage() {
         )}
 
         {tab === 'reports' && (
-          <section data-testid="tab-panel-reports" className="text-sm text-gray-500">
-            보고서는 다음 단계(U5)에서 제공됩니다.
+          <section data-testid="tab-panel-reports" className="space-y-4">
+            {!isMentor && detail.status === 'CLOSED' && <CompletionResult cohortId={detail.id} />}
+            <ReportForm
+              cohortId={detail.id}
+              onToast={setToast}
+              onSubmitted={() => setReportReloadKey((k) => k + 1)}
+            />
+            <ReportList cohortId={detail.id} reloadKey={reportReloadKey} />
           </section>
         )}
       </main>

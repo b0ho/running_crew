@@ -122,10 +122,7 @@ export interface Page<T> {
 
 export type EnrollmentStatus = 'CONFIRMED' | 'WAITING' | 'REJECTED';
 
-export type NotificationType =
-  | 'ENROLLMENT_CONFIRMED'
-  | 'ENROLLMENT_REJECTED'
-  | 'COMPLETION_RESULT';
+export type NotificationType = 'ENROLLMENT_CONFIRMED' | 'ENROLLMENT_REJECTED' | 'COMPLETION_RESULT';
 
 /** 선착순 참여 결과. 대기(WAITING)면 waitingPosition 이 대기 순번, 확정이면 null. */
 export interface JoinResultDto {
@@ -194,4 +191,71 @@ export interface CohortAttendanceDto {
   totalCount: number;
   progressRate: number;
   sessions: SessionAttendanceDto[];
+}
+
+// ---- U5 completion DTO 타입 (learnkk-api com.learnkk.completion.dto 와 동기화) ----
+
+/** 최종 보고서 — 첨부 원경로 비노출(hasAttachment 만), 다운로드는 별도 엔드포인트. */
+export interface ReportDto {
+  id: number;
+  cohortId: number;
+  authorId: number;
+  body: string;
+  hasAttachment: boolean;
+  submittedAt: string;
+}
+
+/** 수료증 메타(이미지 경로 비노출 — 다운로드는 /certificate 스트리밍). */
+export interface CertificateDto {
+  id: number;
+  cohortId: number;
+  menteeId: number;
+  issuedAt: string;
+}
+
+/** 코호트 종료 요약 — 수료자/미수료/전체 확정 멘티·정산 충족·발급 증서 수. */
+export interface CohortEndSummaryDto {
+  certifiedCount: number;
+  notCertifiedCount: number;
+  totalConfirmed: number;
+  settlementSatisfied: boolean;
+  issuedCertificateCount: number;
+}
+
+/** 최종 보고서 제출 요청 — 본문 필수(첨부는 multipart 별도 파트). */
+export interface ReportSubmitRequest {
+  body: string;
+}
+
+// ---- U6 admin-metrics DTO 타입 (learnkk-api com.learnkk.metrics.dto 와 동기화) ----
+
+/** 운영 지표 개요 — 종료된 코호트 기준. 출석률·수료율은 백분율(0~100, 소수 1자리), 분모 0 → 0. */
+export interface MetricsOverviewDto {
+  completedCohortCount: number;
+  attendanceRate: number;
+  completionRate: number;
+  certificateCount: number;
+  scopeLabel: string;
+}
+
+/** 증빙 이력 1건(관리자 뷰). 다운로드는 sessionId·evidenceId 로 기존 스트리밍 엔드포인트 경유. */
+export interface EvidenceHistoryItem {
+  evidenceId: number;
+  sessionId: number;
+  cohortTitle: string;
+  sessionSeq: number;
+  mimeType: string;
+  size: number;
+  uploadedBy: string;
+  createdAt: string;
+}
+
+/** 보고서 이력 1건(관리자 뷰). 첨부 원경로 비노출(hasAttachment 만). */
+export interface ReportHistoryItem {
+  reportId: number;
+  cohortId: number;
+  cohortTitle: string;
+  authorName: string;
+  hasAttachment: boolean;
+  submittedAt: string;
 }

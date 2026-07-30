@@ -6,14 +6,14 @@
 - **Scope**: enterprise
 - **Start Date**: 2026-07-22T08:45:31Z
 - **State Version**: 7
-- **Active Agent**: aidlc-developer-agent
+- **Active Agent**: aidlc-pipeline-deploy-agent
 - **Worktree Path**:
 - **Bolt Refs**:
 - **Practices Affirmed Timestamp**: 2026-07-24T14:56:25Z
 
 ## Scope Configuration
-- **Stages to Execute**: 0.1, 0.2, 0.3, 1.1, 1.2, 1.3, 1.4, 1.5, 1.6, 1.7, 2.2, 2.3, 2.4, 2.5, 2.6, 2.7, 2.8, 3.1, 3.2, 3.3, 3.4, 3.5, 3.6, 3.7, 4.1, 4.2, 4.3, 4.4, 4.5, 4.6, 4.7
-- **Stages to Skip**: 2.1 (reverse-engineering — greenfield)
+- **Stages to Execute**: 0.1, 0.2, 0.3, 1.1, 1.2, 1.3, 1.4, 1.5, 1.6, 1.7, 2.2, 2.3, 2.4, 2.5, 2.6, 2.7, 2.8, 3.1, 3.2, 3.3, 3.4, 3.5, 3.6, 3.7
+- **Stages to Skip**: 2.1 (reverse-engineering — greenfield), 4.1 (deployment-pipeline), 4.2 (environment-provisioning), 4.3 (deployment-execution), 4.4 (observability-setup), 4.5 (incident-response), 4.6 (performance-validation), 4.7 (feedback-optimization)
 - **Depth**: Comprehensive
 - **Test Strategy**: Comprehensive
 
@@ -24,9 +24,9 @@
 - **Build System**: Unknown
 
 ## Execution Plan Summary
-- **Total Stages**: 31
-- **Completed**: 21
-- **In Progress**: code-generation
+- **Total Stages**: 24
+- **Completed**: 23
+- **In Progress**: none
 
 ## Runtime State
 - **Revision Count**: 1
@@ -38,8 +38,8 @@
 - **Initialization**: Verified
 - **Ideation**: Verified
 - **Inception**: Verified
-- **Construction**: Active
-- **Operation**: Pending
+- **Construction**: Verified
+- **Operation**: Skipped
 
 ## Stage Progress
 <!-- Checkbox states: [ ] not started, [-] in progress, [x] completed, [S] skipped via --stage/--phase jump -->
@@ -74,27 +74,27 @@ Per unit: [TBD]
 - [x] nfr-requirements — EXECUTE
 - [x] nfr-design — EXECUTE
 - [x] infrastructure-design — EXECUTE
-- [-] code-generation — EXECUTE
-- [ ] build-and-test — EXECUTE
-- [ ] ci-pipeline — EXECUTE
+- [x] code-generation — EXECUTE
+- [x] build-and-test — EXECUTE
+- [S] ci-pipeline — EXECUTE
 
 ### OPERATION PHASE
-- [ ] deployment-pipeline — EXECUTE
-- [ ] environment-provisioning — EXECUTE
-- [ ] deployment-execution — EXECUTE
-- [ ] observability-setup — EXECUTE
-- [ ] incident-response — EXECUTE
-- [ ] performance-validation — EXECUTE
-- [ ] feedback-optimization — EXECUTE
+- [ ] deployment-pipeline — SKIP
+- [ ] environment-provisioning — SKIP
+- [ ] deployment-execution — SKIP
+- [ ] observability-setup — SKIP
+- [ ] incident-response — SKIP
+- [ ] performance-validation — SKIP
+- [ ] feedback-optimization — SKIP
 
 ## Current Status
 - **Lifecycle Phase**: CONSTRUCTION
-- **Current Stage**: code-generation
-- **Next Stage**: build-and-test
-- **Status**: Running
-- **Last Updated**: 2026-07-30T05:35:06Z
+- **Current Stage**: ci-pipeline
+- **Next Stage**: none
+- **Status**: Completed
+- **Last Updated**: 2026-07-30T14:55:20Z
 
 ## Session Resume Point
-- **Last Completed Stage**: infrastructure-design
-- **Next Action**: Execute Code Generation
+- **Last Completed Stage**: build-and-test
+- **Next Action**: Workflow complete
 - **Pending Artifacts**: none
